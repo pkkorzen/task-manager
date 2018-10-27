@@ -1,21 +1,10 @@
-package com.example.taskmanager.entity;
+package com.example.taskmanager.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
-public class Task {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class TaskDto {
     private Long id;
     private String name;
     private String description;
-    private boolean isDone;
-
-    public Task() {
-    }
+    private String isDone;
 
     public Long getId() {
         return id;
@@ -41,11 +30,11 @@ public class Task {
         this.description = description;
     }
 
-    public boolean isDone() {
+    public String getIsDone() {
         return isDone;
     }
 
-    public void setIsDone(boolean isDone) {
+    public void setIsDone(String isDone) {
         this.isDone = isDone;
     }
 }

@@ -1,15 +1,16 @@
 package com.example.taskmanager.service;
 
+import com.example.taskmanager.dto.TaskDto;
 import com.example.taskmanager.entity.Task;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface TaskService {
-    List<Task> findAllTasks();
-    List<Task> findAllFinishedTasks();
-    List<Task> findAllUnfinishedTasks();
-    Optional<Task> findTaskById(Long id);
-    void saveTask(Task task);
+    List<TaskDto> findAllTasks();
+    List<TaskDto> findAllFinishedTasks();
+    List<TaskDto> findAllUnfinishedTasks();
+    Optional<TaskDto> findTaskById(Long id);
+    void saveTask(TaskDto task);
     void deleteTask(Long id);
 }

@@ -1,5 +1,7 @@
 package com.example.taskmanager.service.impl;
 
+import com.example.taskmanager.converter.TaskDtoConverter;
+import com.example.taskmanager.dto.TaskDto;
 import com.example.taskmanager.entity.Task;
 import com.example.taskmanager.repository.TaskRepository;
 import com.example.taskmanager.service.TaskService;
@@ -15,43 +17,49 @@ import java.util.stream.StreamSupport;
 public class TaskServiceImpl implements TaskService {
 
     private TaskRepository taskRepository;
+    private TaskDtoConverter taskDtoConverter;
 
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository){
+    public TaskServiceImpl(TaskRepository taskRepository, TaskDtoConverter taskDtoConverter){
         this.taskRepository = taskRepository;
+        this.taskDtoConverter = taskDtoConverter;
     }
 
     @Override
-    public List<Task> findAllTasks() {
+    public List<TaskDto> findAllTasks() {
         Iterable <Task> tasks = taskRepository.findAll();
-        return StreamSupport.stream(tasks.spliterator(), true).collect(Collectors.toList());
+        return StreamSupport.stream(tasks.spliterator(), true).map(task -> taskDtoConverter.convert(task))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Task> findAllFinishedTasks() {
+    public List<TaskDto> findAllFinishedTasks() {
         Iterable <Task> tasks = taskRepository.findAllByIsDoneTrue();
-        return StreamSupport.stream(tasks.spliterator(), true).collect(Collectors.toList());
+        return StreamSupport.stream(tasks.spliterator(), true).map(task -> taskDtoConverter.convert(task))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Task> findAllUnfinishedTasks() {
+    public List<TaskDto> findAllUnfinishedTasks() {
         Iterable <Task> tasks = taskRepository.findAllByIsDoneFalse();
-        return StreamSupport.stream(tasks.spliterator(), true).collect(Collectors.toList());
+        return StreamSupport.stream(tasks.spliterator(), true).map(task -> taskDtoConverter.convert(task))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Task> findTaskById(Long id) {
-        return taskRepository.findById(id);
+    public Optional<TaskDto> findTaskById(Long id) {
+        Optional<Task> result = taskRepository.findById(id);
+        return result.map(task -> taskDtoConverter.convert(task));
     }
 
     @Override
-    public void saveTask(Task task) {
-        taskRepository.save(task);
+    public void saveTask(TaskDto task) {
+        taskRepository.save(taskDtoConverter.convert(task));
     }
 
     @Override
     public void deleteTask(Long id) {
-        Optional<Task> result = findTaskById(id);
+        Optional<Task> result = taskRepository.findById(id);
         result.ifPresent(task -> taskRepository.delete(task));
     }
 }

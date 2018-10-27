@@ -1,5 +1,6 @@
 package com.example.taskmanager.controller;
 
+import com.example.taskmanager.dto.TaskDto;
 import com.example.taskmanager.entity.Task;
 import com.example.taskmanager.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class TaskController {
 
     @GetMapping("/tasks")
     public String showAllTasks(Model model){
-        List<Task> tasks = taskService.findAllTasks();
+        List<TaskDto> tasks = taskService.findAllTasks();
         model.addAttribute("tasks",tasks);
         model.addAttribute("mainTitle", "All");
         return "tasks/all";
@@ -26,7 +27,7 @@ public class TaskController {
 
     @GetMapping("/tasks/finished")
     public String showFinishedTasks(Model model){
-        List<Task> tasks = taskService.findAllFinishedTasks();
+        List<TaskDto> tasks = taskService.findAllFinishedTasks();
         model.addAttribute("tasks",tasks);
         model.addAttribute("mainTitle", "Finished");
         return "tasks/all";
@@ -34,14 +35,14 @@ public class TaskController {
 
     @GetMapping("/tasks/unfinished")
     public String showUnfishedTasks(Model model){
-        List<Task> tasks = taskService.findAllUnfinishedTasks();
+        List<TaskDto> tasks = taskService.findAllUnfinishedTasks();
         model.addAttribute("tasks",tasks);
         model.addAttribute("mainTitle", "Unfinished");
         return "tasks/all";
     }
 
     @PostMapping("/task/save")
-    public String saveTask(@ModelAttribute Task task, @RequestParam(name = "pressed-button") String pushedButton){
+    public String saveTask(@ModelAttribute TaskDto task, @RequestParam(name = "pressed-button") String pushedButton){
 
         if ("save".equalsIgnoreCase(pushedButton)) {
             taskService.saveTask(task);
@@ -54,7 +55,9 @@ public class TaskController {
     public String addTask(Model model){
         model.addAttribute("operationTitle", "New");
         model.addAttribute("mainParagraph", "Add new");
-        model.addAttribute("task", new Task());
+        TaskDto taskDto = new TaskDto();
+        taskDto.setIsDone("No");
+        model.addAttribute("task", taskDto);
         return "tasks/task";
     }
 
@@ -63,7 +66,7 @@ public class TaskController {
         model.addAttribute("operationTitle", "Edit");
         model.addAttribute("mainParagraph", "Edit");
 
-        Optional<Task> result = taskService.findTaskById(id);
+        Optional<TaskDto> result = taskService.findTaskById(id);
         result.ifPresent(task -> model.addAttribute("task", task));
 
         return "tasks/task";

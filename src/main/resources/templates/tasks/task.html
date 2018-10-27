@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${operationTitle} + 'task'"> task</title>
+</head>
+<body>
+<div class="container">
+    <div th:include="menu.html"></div>
+    <h2 th:text="${mainParagraph} + ' task'"> task</h2>
+    <form class="form-horizontal" action="#" th:action="@{/task/save}" th:object="${task}" method="POST">
+        <div class="form-group" th:if="${task.id}!=0">
+            <label class="control-label col-sm-2">Id: </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="id" placeholder="" name="id" value=""
+                       th:field="*{id}" readonly/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="name">Name:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="name" placeholder="Enter name"
+                       name="name" value="" th:field="*{name}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="descrpition">Description:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="descrpition" placeholder="Enter descrpition" name="descrpition" value=""
+                       th:field="*{descrpition}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="done">Finished:</label>
+            <div class="col-sm-10">
+                <label class="radio-inline"><input type="radio" th:field="*{done}" th:value="true">Yes</label>
+                <label class="radio-inline"><input type="radio" th:field="*{done}" th:value="false" checked>No</label>
+                <!--<input type="hidden" class="form-control" id="done" name="done" value="false"
+                       th:field="*{done}" readonly/>-->
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="submit" class="btn btn-default" name="pressed-button" value="Save">
+                <input type="submit" class="btn btn-default" name="pressed-button" value="Cancel">
+                <input type="reset" class="btn btn-default" value="Reset">
+            </div>
+        </div>
+    </form>
+    </div>
+</body>
+</html>

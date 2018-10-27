@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 
 public interface TaskRepository extends CrudRepository<Task, Long> {
-    Iterable<Task> findAllByDoneTrue();
-    Iterable<Task> findAllByDoneFalse();
+    Iterable<Task> findAllByIsDoneTrue();
+    Iterable<Task> findAllByIsDoneFalse();
 }

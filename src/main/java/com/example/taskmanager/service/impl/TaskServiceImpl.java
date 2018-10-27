@@ -29,13 +29,13 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> findAllFinishedTasks() {
-        Iterable <Task> tasks = taskRepository.findAllByDoneTrue();
+        Iterable <Task> tasks = taskRepository.findAllByIsDoneTrue();
         return StreamSupport.stream(tasks.spliterator(), true).collect(Collectors.toList());
     }
 
     @Override
     public List<Task> findAllUnfinishedTasks() {
-        Iterable <Task> tasks = taskRepository.findAllByDoneFalse();
+        Iterable <Task> tasks = taskRepository.findAllByIsDoneFalse();
         return StreamSupport.stream(tasks.spliterator(), true).collect(Collectors.toList());
     }
 
